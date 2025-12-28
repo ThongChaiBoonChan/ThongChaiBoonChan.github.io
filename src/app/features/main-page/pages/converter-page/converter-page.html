@@ -1,126 +1,195 @@
 <div class="hero bg-base-200 py-16 px-4 border-b border-base-300">
-      <div class="hero-content text-center">
-        <div class="max-w-2xl">
-          <h1 class="text-5xl font-extrabold tracking-tight mb-4">
-            Transform Your Data, <span class="text-primary">Effortlessly</span>
-          </h1>
-          <p class="text-lg opacity-70 mb-10">
-            Convert your Excel files to CSV, JSON, or PDF in seconds. 
-            Secure, fast, and entirely in your browser.
-          </p>
+  <div class="hero-content text-center">
+    <div class="max-w-2xl">
+      <h1 class="text-5xl font-extrabold tracking-tight mb-4">
+        Transform Your Data, <span class="text-primary">Effortlessly</span>
+      </h1>
+      <p class="text-lg opacity-70 mb-10">
+        Convert your Excel files to CSV, JSON, or PDF in seconds.
+        Secure, fast, and entirely in your browser.
+      </p>
 
-          <div class="card bg-base-100 shadow-2xl border border-base-300 overflow-hidden">
-            <div class="card-body p-0">
-              <div 
-                class="flex flex-col items-center justify-center py-12 px-6 border-2 border-dashed border-base-300 m-4 rounded-xl hover:border-primary transition-colors cursor-pointer group"
-                (click)="fileInput.click()"
-              >
-                <div class="bg-primary/10 p-4 rounded-full group-hover:scale-110 transition-transform mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                  </svg>
-                </div>
-                <p class="text-lg font-medium">Click or Drag & Drop Excel file</p>
-                <p class="text-xs opacity-50 mt-1">XLSX, XLS, or CSV up to 10MB</p>
-                <input #fileInput type="file" class="hidden" (change)="onFileChange($event)" accept=".xlsx, .xls, .csv">
-              </div>
+      <div class="card bg-base-100 shadow-2xl border border-base-300 overflow-hidden">
+        <div class="card-body p-0">
+          <div
+            class="flex flex-col items-center justify-center py-12 px-6 border-2 border-dashed border-base-300 m-4 rounded-xl hover:border-primary transition-colors cursor-pointer group"
+            (click)="fileInput.click()">
+            <div class="bg-primary/10 p-4 rounded-full group-hover:scale-110 transition-transform mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
             </div>
+            <p class="text-lg font-medium">Click or Drag & Drop Excel file</p>
+            <p class="text-xs opacity-50 mt-1">XLSX, XLS, or CSV up to 10MB</p>
+            <input #fileInput type="file" class="hidden" (change)="onFileChange($event)" accept=".xlsx, .xls, .csv">
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    @if (hasData()) {
-      <div class="max-w-6xl mx-auto p-8">
-        <div class="flex flex-col lg:flex-row gap-8">
-          
-          <div class="flex-1 overflow-x-auto">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="text-xl font-bold">Preview Data</h2>
-              <span class="badge badge-outline">50 Rows Found</span>
-            </div>
-            <div class="rounded-box border border-base-300 bg-base-100">
-              <table class="table table-zebra">
-                <thead>
-                  <tr class="bg-base-200">
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Resnley</th>
-                    <th>Status</th>
-                    <th>Export</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>1</th>
-                    <td>Anan</td>
-                    <td>ดันราคา</td>
-                    <td><div class="badge badge-success badge-sm">Active</div></td>
-                    <td>CSV</td>
-                  </tr>
-                  <tr>
-                    <th>2</th>
-                    <td>Lartivan</td>
-                    <td>ต่อยอดงานเก่า</td>
-                    <td><div class="badge badge-ghost badge-sm">Pending</div></td>
-                    <td>PDF</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+<!-- selection buttons -->
+ <div class="max-w-5xl mx-auto p-8">
+      <h2 class="text-2xl font-bold mb-2">Configure Import</h2>
+      <p class="text-sm opacity-60 mb-8 font-serif">Select how you want to process the Excel rows.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <app-import-mode-card 
+          title="Insert" 
+          description="Create new records only."
+          [active]="currentMode() === 'insert'"
+          (select)="currentMode.set('insert')" />
+
+        <app-import-mode-card 
+          title="Update" 
+          description="Modify existing records."
+          colorClass="radio-secondary"
+          [active]="currentMode() === 'update'"
+          (select)="currentMode.set('update')" />
+
+        <app-import-mode-card 
+          title="Upsert" 
+          description="The smart sync option."
+          colorClass="radio-accent"
+          [active]="currentMode() === 'upsert'"
+          (select)="currentMode.set('upsert')" />
+
+      </div>
+
+      <div class="mt-12 flex justify-end">
+        <button class="btn btn-primary btn-lg">
+          Process with {{ currentMode() | uppercase }} Mode
+        </button>
+      </div>
+    </div>
+<!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <label class="label cursor-pointer p-4 border rounded-xl hover:bg-base-200 transition-colors border-base-300">
+    <div class="flex flex-col gap-1">
+      <span class="font-bold text-primary">Insert Only</span>
+      <span class="text-xs opacity-60">Add new records only. Will not change existing data.</span>
+    </div>
+    <input type="radio" name="importMode" class="radio radio-primary ml-4" checked />
+  </label>
+
+  <label class="label cursor-pointer p-4 border rounded-xl hover:bg-base-200 transition-colors border-base-300">
+    <div class="flex flex-col gap-1">
+      <span class="font-bold text-secondary">Update Only</span>
+      <span class="text-xs opacity-60">Update existing records. New records will be ignored.</span>
+    </div>
+    <input type="radio" name="importMode" class="radio radio-secondary ml-4" />
+  </label>
+
+  <label class="label cursor-pointer p-4 border rounded-xl hover:bg-base-200 transition-colors border-base-300">
+    <div class="flex flex-col gap-1">
+      <span class="font-bold text-accent">Upsert (Sync)</span>
+      <span class="text-xs opacity-60">The best of both. Updates old records and adds new ones.</span>
+    </div>
+    <input type="radio" name="importMode" class="radio radio-accent ml-4" />
+  </label>
+</div> -->
+
+@if (hasData()) {
+  <!-- mock table -->
+<div class="max-w-6xl mx-auto p-8">
+  <div class="flex flex-col lg:flex-row gap-8">
+
+    <div class="flex-1 overflow-x-auto">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Preview Data</h2>
+        <span class="badge badge-outline">50 Rows Found</span>
+      </div>
+      <div class="rounded-box border border-base-300 bg-base-100">
+        <table class="table table-zebra">
+          <thead>
+            <tr class="bg-base-200">
+              <th>#</th>
+              <th>Name</th>
+              <th>Resnley</th>
+              <th>Status</th>
+              <th>Export</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>1</th>
+              <td>Anan</td>
+              <td>ดันราคา</td>
+              <td>
+                <div class="badge badge-success badge-sm">Active</div>
+              </td>
+              <td>CSV</td>
+            </tr>
+            <tr>
+              <th>2</th>
+              <td>Lartivan</td>
+              <td>ต่อยอดงานเก่า</td>
+              <td>
+                <div class="badge badge-ghost badge-sm">Pending</div>
+              </td>
+              <td>PDF</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="w-full lg:w-80">
+      <div class="card bg-base-100 shadow-xl border border-base-300">
+        <div class="card-body">
+          <h3 class="card-title text-sm uppercase tracking-widest opacity-60">Export Options</h3>
+
+          <div class="form-control">
+            <label class="label cursor-pointer">
+              <span class="label-text font-medium">Include Headers</span>
+              <input type="checkbox" checked class="checkbox checkbox-primary checkbox-sm" />
+            </label>
           </div>
 
-          <div class="w-full lg:w-80">
-            <div class="card bg-base-100 shadow-xl border border-base-300">
-              <div class="card-body">
-                <h3 class="card-title text-sm uppercase tracking-widest opacity-60">Export Options</h3>
-                
-                <div class="form-control">
-                  <label class="label cursor-pointer">
-                    <span class="label-text font-medium">Include Headers</span> 
-                    <input type="checkbox" checked class="checkbox checkbox-primary checkbox-sm" />
-                  </label>
-                </div>
-
-                <div class="form-control mt-4">
-                  <span class="label-text mb-2 font-medium">Format</span>
-                  <select class="select select-bordered w-full select-sm">
-                    <option selected>CSV</option>
-                    <option>PDF Document</option>
-                    <option>JSON Object</option>
-                  </select>
-                </div>
-
-                <div class="divider"></div>
-
-                <button class="btn btn-primary w-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                  Download Data
-                </button>
-              </div>
-            </div>
+          <div class="form-control mt-4">
+            <span class="label-text mb-2 font-medium">Format</span>
+            <select class="select select-bordered w-full select-sm">
+              <option selected>CSV</option>
+              <option>PDF Document</option>
+              <option>JSON Object</option>
+            </select>
           </div>
 
+          <div class="divider"></div>
+
+          <button class="btn btn-primary w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Download Data
+          </button>
         </div>
       </div>
-    } @else {
-      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-16">
-        <div class="text-center">
-          <div class="text-primary mb-2">⚡</div>
-          <h3 class="font-bold">Fast Parsing</h3>
-          <p class="text-sm opacity-60">Processes 10,000+ rows instantly.</p>
-        </div>
-        <div class="text-center">
-          <div class="text-primary mb-2">🔒</div>
-          <h3 class="font-bold">Private</h3>
-          <p class="text-sm opacity-60">Files never leave your computer.</p>
-        </div>
-        <div class="text-center">
-          <div class="text-primary mb-2">🎨</div>
-          <h3 class="font-bold">Multiple Formats</h3>
-          <p class="text-sm opacity-60">PDF, CSV, JSON, and more.</p>
-        </div>
-      </div>
-    }
+    </div>
+
+  </div>
+</div>
+} @else {
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-16">
+  <div class="text-center">
+    <div class="text-primary mb-2">⚡</div>
+    <h3 class="font-bold">Fast Parsing</h3>
+    <p class="text-sm opacity-60">Processes 10,000+ rows instantly.</p>
+  </div>
+  <div class="text-center">
+    <div class="text-primary mb-2">🔒</div>
+    <h3 class="font-bold">Private</h3>
+    <p class="text-sm opacity-60">Files never leave your computer.</p>
+  </div>
+  <div class="text-center">
+    <div class="text-primary mb-2">🎨</div>
+    <h3 class="font-bold">Multiple Formats</h3>
+    <p class="text-sm opacity-60">PDF, CSV, JSON, and more.</p>
+  </div>
+</div>
+}

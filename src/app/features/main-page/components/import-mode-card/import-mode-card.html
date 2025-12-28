@@ -1,0 +1,19 @@
+<div 
+      (click)="select.emit()"
+      [class.border-primary]="active()"
+      [class.bg-primary/5]="active()"
+      class="card bg-base-100 border-2 cursor-pointer hover:border-primary/50 transition-all p-5 border-base-300 shadow-sm group"
+    >
+      <div class="flex items-center gap-4">
+        <input type="radio" [class]="'radio ' + colorClass()" [checked]="active()" />
+        
+        <div class="flex-1">
+          <div class="font-bold text-lg group-hover:text-primary transition-colors leading-none">
+            {{ title() }}
+          </div>
+          <div class="text-xs opacity-60 mt-1 leading-tight">
+            {{ description() }}
+          </div>
+        </div>
+      </div>
+    </div>
