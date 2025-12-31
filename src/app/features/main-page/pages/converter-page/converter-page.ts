@@ -24,6 +24,8 @@ fileName = signal<string | null>(null);
   async onUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
+      this.fileName.set(file.name); // Store the name
+      this.hasData.set(true);
       const data = await this.excelService.parseExcel(file);
       this.tableData.set(data);
       
@@ -32,5 +34,10 @@ fileName = signal<string | null>(null);
         this.tableHeaders.set(Object.keys(data[0]));
       }
     }
+  }
+
+  resetFile() {
+    this.fileName.set(null);
+    this.hasData.set(false);
   }
 }
