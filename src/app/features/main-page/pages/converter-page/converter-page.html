@@ -43,7 +43,7 @@
 </div>
 
 <!-- selection buttons -->
-<div class="max-w-5xl mx-auto p-8">
+<!-- <div class="max-w-5xl mx-auto p-8">
   <h2 class="text-2xl font-bold mb-2">Configure Import</h2>
   <p class="text-sm opacity-60 mb-8 font-serif">Select how you want to process the Excel rows.</p>
 
@@ -65,7 +65,7 @@
       Process with {{ currentMode() | uppercase }} Mode
     </button>
   </div>
-</div>
+</div> -->
 
 <!-- data table -->
 <div class="p-8">
@@ -113,4 +113,30 @@
   </div>
 </div>
 }
+</div>
+
+
+<div class="mt-8 space-y-4">
+  <div class="flex items-end gap-4">
+    <div class="form-control w-full max-w-xs">
+      <label class="label"><span class="label-text">Target Table Name</span></label>
+      <input #tableInput type="text" placeholder="e.g. EMPLOYEES" class="input input-bordered input-sm" />
+    </div>
+    <button 
+      (click)="onProcess(tableInput.value)" 
+      class="btn btn-primary btn-sm">
+      Generate SQL
+    </button>
+  </div>
+
+  @if (generatedSql()) {
+    <div class="relative group">
+      <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button class="btn btn-xs btn-outline" (click)="copyToClipboard()">Copy SQL</button>
+      </div>
+      <pre class="bg-slate-900 text-green-400 p-6 rounded-xl overflow-x-auto text-xs font-mono max-h-96">
+        <code>{{ generatedSql() }}</code>
+      </pre>
+    </div>
+  }
 </div>
